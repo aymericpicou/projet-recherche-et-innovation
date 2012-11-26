@@ -1,0 +1,151 @@
+		<!DOCTYPE html>
+    <html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>Backbone</title>
+        <link href="libs/vendors/bootstrap/css/bootstrap.css" rel="stylesheet">
+        <style>
+            body {
+                padding-top: 60px;
+                padding-bottom: 40px;
+            }
+        </style>
+        <link href="libs/vendors/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+		<SCRIPT LANGUAGE="javascript">
+function controle(form1) {
+var test = document.form1.titre.value;
+ blog.listeArticles.add(new blog.Article({ 
+                title : document.form1.titre.value, content : document.form1.contenu.value 
+            }));
+			articlesView.render()
+}
+</SCRIPT>
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-fixed-top">
+		
+            <div class="navbar-inner">
+                <div class="container">
+					<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="#">Mon blog</a>
+          <div class="nav-collapse">
+            <ul class="nav">
+              <li class="active"><a href="#">Home</a></li>
+              <li><a href="#about">About</a></li>
+              <li><a href="#contact">Contact</a></li>
+            </ul></div>
+					
+					
+                </div>
+            </div>
+        </div>
+		
+        <div class="container">
+
+            <div class="hero-unit">
+                <h1>Backbone rocks !!!</h1>
+            </div>
+			
+			
+
+
+
+            <!-- Template d'affichage des articles -->
+			
+            <script type="text/template" id="articles-collection-template">
+			<div class="row">
+			<div class="span4"></div>
+			
+			<div class="span5">
+                <% _.each(articles, function(article) { %>
+                <h3><%= article.title %></h3>
+                <h6><%= article.publicationDate %></h6>
+                <p><%= article.content %></p>
+                <% }); %>
+				<FORM NAME="form1">
+				<p> rentrez le titre de l'article </p><INPUT TYPE="text" NAME="titre" VALUE=""><BR>
+				<p> rentrez le contenu de l'article </p><INPUT TYPE="text" NAME="contenu" VALUE=""><BR>
+				<INPUT TYPE="button" NAME="bouton" VALUE="valider" onClick="controle(form1)">
+				</FORM></div></div>
+            </script>
+            <!-- div où seront affichés les articles -->
+            <div id="articles-collection-container"></div>
+
+        </div>
+
+    </body>
+    <!-- === Frameworks === -->
+    <script src="libs/vendors/jquery-1.7.2.js"></script>
+    <!--<script src="libs/vendors/bootstrap/js/bootstrap.js"></script>-->
+    <script src="libs/vendors/underscore.js"></script>
+    <script src="libs/vendors/backbone.js"></script>
+
+    <!-- === code applicatif === -->
+    <script>
+
+        $(function (){
+            window.blog = {};
+
+            /*--- Modèle article ---*/
+
+            blog.Article = Backbone.Model.extend({
+                defaults : {
+                    title : "titre de l'article",
+                    content : "contenu de l'article",
+                },
+                initialize : function () {
+                    console.log ("Création d'un nouvel article");
+                    this.set("publicationDate",new Date());
+                }
+            });
+
+            /*--- Collection d'articles ---*/
+
+            blog.ArticlesCollection = Backbone.Collection.extend({
+                model : blog.Article,
+                initialize : function () {
+                    console.log ("Création d'une collection d'articles")
+                }
+            });
+
+            /*--- Vues ---*/
+            blog.ArticlesView = Backbone.View.extend({
+
+                el : $("#articles-collection-container"),
+
+                initialize : function () {
+                    this.template = _.template($("#articles-collection-template").html());
+
+                    /*--- binding ---*/
+                    _.bindAll(this, 'render');
+
+                    this.collection.bind('change', this.render);
+                    this.collection.bind('add', this.render);
+                    this.collection.bind('remove', this.render);
+                    /*---------------*/
+                },
+
+                render : function () {
+                    var renderedContent = this.template({ 
+                        articles : this.collection.toJSON() 
+                    });
+                    $(this.el).html(renderedContent);
+                    return this;
+                }
+            });
+
+            /*--- bootstrap ---*/
+            blog.listeArticles = new blog.ArticlesCollection();
+
+
+	articlesView = new blog.ArticlesView({ collection : blog.listeArticles })
+	articlesView.render()
+        });
+    </script>
+    </html>
