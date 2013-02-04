@@ -1,0 +1,17 @@
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import java.awt.Color;
+public class fen extends JFrame {
+	public static void main(String[] args){
+		fen fenetre=new fen();
+	  }   
+  public fen(){
+	  JFrame fenetre = new JFrame();
+	    fenetre.setTitle("parse du flux RSS du NY time");
+	    fenetre.setSize(400, 100);
+	    fenetre.setLocationRelativeTo(null);
+	    fenetre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);        
+	    fenetre.setContentPane(new mypanel());               
+	    fenetre.setVisible(true);
+  }
+}

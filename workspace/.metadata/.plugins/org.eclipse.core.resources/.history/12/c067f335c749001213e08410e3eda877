@@ -1,0 +1,17 @@
+package client;
+
+import javax.ejb.Stateless;
+
+@Stateless(name="Bonjour", mappedName="EchoRemote")
+public class EchoBean implements EchoRemote {
+
+	public String hello() {
+		return "hello you!";
+	}
+
+	public String echo(String string) {
+		
+		return string;
+	}
+
+}

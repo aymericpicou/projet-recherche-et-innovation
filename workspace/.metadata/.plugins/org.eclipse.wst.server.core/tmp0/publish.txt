@@ -1,0 +1,8 @@
+#GlassFish 3
+#Sun Jan 13 17:05:28 CET 2013
+org.eclipse.jst.jee.server\:servlet=C\:\\Users\\aymeric\\Desktop\\glassfish\\glassfish3\\glassfish\\domains\\domain1\\eclipseApps\\servlet
+org.eclipse.jst.jee.server\:test\ servlet=C\:\\Users\\aymeric\\Desktop\\glassfish\\glassfish3\\glassfish\\domains\\domain1\\eclipseApps\\test servlet
+org.eclipse.jst.jee.server\:testservlet=C\:\\Users\\aymeric\\Desktop\\glassfish\\glassfish3\\glassfish\\domains\\domain1\\eclipseApps\\testservlet
+org.eclipse.jst.jee.server\:TEST\ EJB=C\:\\Users\\aymeric\\Desktop\\glassfish\\glassfish3\\glassfish\\domains\\domain1\\eclipseApps\\TEST EJB
+org.eclipse.jst.jee.server\:testejb3=C\:\\Users\\aymeric\\Desktop\\glassfish\\glassfish3\\glassfish\\domains\\domain1\\eclipseApps\\testejb3
+org.eclipse.jst.jee.server\:EJB\ projet=C\:\\Users\\aymeric\\Desktop\\glassfish\\glassfish3\\glassfish\\domains\\domain1\\eclipseApps\\EJB projet

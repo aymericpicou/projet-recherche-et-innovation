@@ -1,0 +1,22 @@
+package client;
+
+import javax.ejb.Stateless;
+
+import com.sun.xml.ws.developer.Stateful;
+
+public class EchoBean implements EchoRemote {
+	String login=null;
+	public void login(String log){
+		login=log;
+	}
+	public String hello() {
+		return "hello " + login;
+	}
+
+	public String echo(String string) {
+		
+		return "le parametre est :" + string;
+	}
+	
+
+}

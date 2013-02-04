@@ -1,0 +1,15 @@
+package graph;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+public class fenetre extends JFrame {
+	public static void main(String args[]) {
+		try {
+			fenetre frame = new fenetre();
+			frame.setVisible(true);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+}

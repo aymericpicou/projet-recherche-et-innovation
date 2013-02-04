@@ -1,0 +1,23 @@
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import java.awt.BorderLayout;
+import javax.swing.BoxLayout;
+ 
+public class fen extends JFrame {
+	mypanel pan = new mypanel();   
+	JButton bouton = new JButton("Mon premier bouton");
+	public static void main(String[] args){
+		fen fen= new fen();
+		}
+	
+	
+	  public fen(){
+		  this.setTitle("Ma première fenêtre Java");
+		    this.setSize(400, 500);
+		    this.setLocationRelativeTo(null);
+		    this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);             
+		    this.setVisible(true);
+		  }  
+
+}

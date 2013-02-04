@@ -1,0 +1,9 @@
+package client;
+
+import javax.ejb.Remote;
+
+@Remote
+public interface EchoRemote {
+	public String hello();
+	public String echo(String string);
+}

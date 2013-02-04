@@ -1,0 +1,17 @@
+import javax.swing.JPanel;
+import javax.swing.JButton;
+import java.awt.BorderLayout;
+import javax.swing.BoxLayout;
+import java.awt.Graphics;
+public class mypanel extends JPanel{
+	public void mypanel(){
+		
+		
+	}
+	public void paintComponent(Graphics g){
+	    JButton b=new JButton("precedent");
+	    JButton b2=new JButton("suivant");
+	    this.add(b);
+	    this.add(b2);
+	  } 
+}
