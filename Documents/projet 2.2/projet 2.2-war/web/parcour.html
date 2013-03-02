@@ -1,0 +1,147 @@
+<html lang="en">
+  		<meta charset="utf-8">
+		<title>Liste des notes</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="description" content="">
+		<meta name="author" content="">
+		<!-- Le styles -->
+		<link href="css/bootstrap.css" rel="stylesheet">
+		<link href="css/bootstrap-responsive.css" rel="stylesheet">
+		  <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
+		<style type="text/css">
+			body {
+				//padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+				overflow: none;
+				overflow: hidden;
+				overflow: scroll;
+			}
+			#creation{
+				text-align:center;
+			}
+
+			  #bana{margin:auto;background:#FFFFFF;padding:20px 0px 20px 0px;}
+    #bana h1{margin:0px 0px 10px 20px;}
+    #bana #map_canvas{width:280px;height:270px;margin:auto;}
+    #bana #panel{width:500px;margin:auto;}
+    #bana #destinationForm{margin:0px 0px 20px 0px;background:#EEEEEE;padding:10px 20px;border:solid 1px #C0C0C0;}
+    #bana #destinationForm input[type=text]{border:solid 1px #C0C0C0;}
+		</style>
+
+<header>
+   <div class="navbar navbar-inverse navbar-fixed-top">
+			<div class="navbar-inner">
+				<div class="container">
+				    <ul class="pager">
+					    <li><a href="mes_notes.html"><i class="icon-chevron-left"></i></a></li>
+                    	<li><a href="index.html"><i class="icon-off"></i></a></li>
+				    </ul>
+				</div>
+			</div>
+		</div>
+    	</br>
+	</header>
+	
+	
+	<!--<iframe src="liste.html" scrolling="auto" frameborder="1"  class="span12" align="center" width="280" height="150" style="padding : 0px 0px;"<!--style="width:120%; height:100%; margin:auto;"transparency></iframe>-->
+	
+<SCRIPT>	
+function getCookie(c_name)
+{
+var i,x,y,ARRcookies=document.cookie.split(";");
+for (i=0;i<ARRcookies.length;i++)
+{
+  x=ARRcookies[i].substr(0,ARRcookies[i].indexOf("="));
+  y=ARRcookies[i].substr(ARRcookies[i].indexOf("=")+1);
+  x=x.replace(/^\s+|\s+$/g,"");
+  if (x==c_name)
+    {
+    return unescape(y);
+    }
+  }
+}
+function initialisation() {
+console.log(getCookie('parcour')); // on récupère l'id du parcour a afficher et on remplie le tableau d'adresse et de com
+  var adresse = ['Toulouse', 'Montpellier', 'Lyon'];
+  var com = ['c est une belle ville','nombreuse places à visiter','tres belle agglomeration'];
+var currentObject = null; 
+
+  var myOptions = {
+    zoom : 8,
+    center : new google.maps.LatLng(45.0, 3.0),
+    mapTypeId : google.maps.MapTypeId.ROADMAP
+  }
+
+  var oMap = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+ 
+  // creation objet Geocoder
+  var geocoder = new google.maps.Geocoder();
+  // appel methode geocode
+  for (var i = 0; i < adresse.length; i++) {
+  var text = com[i];
+  geocoder.geocode( { 'address': adresse[i]}, function( data, status,text) {
+    // reponse OK
+    if( status == google.maps.GeocoderStatus.OK){
+      // recup. position
+      var pos = data[0].geometry.location;
+      // creation d'un marker
+      var marker = new google.maps.Marker({
+        map : oMap,
+        position : pos,
+      });
+      // centrage de la carte
+      oMap.setCenter( pos);
+    }
+    else {
+      alert("Geocode was not successful for the following reason: " + status);
+    }
+  });
+   currentObject = $("<div id='test' style='text-align : center;'><h4>Etape "+i+" :</h4><p>lieu : "+adresse[i]+"</p><p> Commentaire : "+com[i]+"</p></div>"); 
+ $("#etape").append(currentObject);
+  }
+}
+
+function supprimer(){
+var idCssDossier = getCookie('parcour');
+		$.ajax({ // on envoie l'id de la note à supprimer
+						   type: "POST",
+						   url: "serveur.php",
+						   data:  idCssDossier,
+						   success: function(msg){
+						   
+							document.location.href="liste_notes.html";
+							
+							}
+				});
+				}
+
+</SCRIPT>
+<body onload=initialisation();>
+	
+	
+	
+	
+ 
+	<div class="row-fluid">
+
+	<div id="bana">
+		<div id="panel"></div>
+			<div id="map_canvas" >
+			<p>Veuillez patienter pendant le chargement de la carte...</p>
+			</div>
+		</div>
+		<div id="etape"></div>
+		<button class="btn btn-large btn-block" style="color:red;" type="button" onclick=supprimer();>Supprimer </button>
+	  </div>
+	  
+  </body>
+ 
+   <script type="text/javascript" src="js//jquery.min.js"></script>
+    <script type="text/javascript" src="js/jquerry-1.8.3.min.js"></script>
+    
+    <script type="text/javascript" src="js//functions.js"></script>
+    <script src="js/bootstrap.js"></script>
+	<script src="libs/underscore.js"></script>
+	<script src="libs/backbone.js"></script> 
+	<script  src="libs//backbone_structure.js"></script>
+	
+</html>

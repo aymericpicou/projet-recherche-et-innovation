@@ -1,0 +1,176 @@
+
+
+<html lang="en">
+  		<meta charset="utf-8">
+		<title>Liste des notes</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="description" content="">
+		<meta name="author" content="">
+		<!-- Le styles -->
+		<link href="css/bootstrap.css" rel="stylesheet">
+		<link href="css/bootstrap-responsive.css" rel="stylesheet">
+		<style type="text/css">
+			body {
+				//padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+				overflow: none;
+				overflow: hidden;
+				overflow: scroll;
+			}
+			#creation{
+				text-align:center;
+			}
+		</style>
+ <script type="text/javascript" src="js//jquery.min.js"></script>
+    <script type="text/javascript" src="js/jquerry-1.8.3.min.js"></script>
+    <script type="text/javascript" src="js//functions.js"></script>
+    <script src="js/bootstrap.js"></script>
+	<script src="libs/underscore.js"></script>
+	<script src="libs/backbone.js"></script> 
+	<script  src="libs//backbone_structure.js"></script>
+<header>
+   <div class="navbar navbar-inverse navbar-fixed-top">
+			<div class="navbar-inner">
+				<div class="container">
+				    <ul class="pager">
+					    <li><a href="mes_notes.html"><i class="icon-chevron-left"></i></a></li>
+                    	<li><a href="index.html"><i class="icon-off"></i></a></li>
+				    </ul>
+				</div>
+			</div>
+		</div>
+    	</br>
+	</header>
+	<body onload=controle();>
+  
+	
+	
+	
+	<h4 style="text-align:center;">geonotes disponnibles :</h4>
+	
+	<!--<iframe src="liste.html" scrolling="auto" frameborder="1"  class="span12" align="center" width="280" height="150" style="padding : 0px 0px;"<!--style="width:120%; height:100%; margin:auto;"transparency></iframe>-->
+	
+<SCRIPT>	
+
+
+function controle() { // création de la liste de note de l'utilisateur
+
+$.getJSON('serveur.php', function(data) {	// avec l'ejB session regarde si tu peux mémoriser l'utilisateur et	revoie ses notes sinon tu peux accéder à l'utilisateur en utilisant la méthode getCookie("log"); et faire une requête ajax avec ca.				
+					var list = "";											
+					$.each(data , function( i, item ) {	
+						liste.listenotes.add(new liste.note({ lieu : item.lieu, desc : item.description, num : item.id }));
+						
+				       });
+				notesView.render();	   
+	});
+}
+
+
+function itineraire( nombre){
+
+var currentObject = null;
+currentObject = $("<p> Note selectionné<br><INPUT type=text id='note' value="+nombre+"><div id='contenu'></INPUT><br><button class='btn btn-large btn-primary' onclik=modifier();>Modifier</button><button class='btn btn-large' type='button' onclick=annuler();>Annuler</button></br></br><button class='btn btn-large btn-primary' type='button' onclick=supprimer();>Supprimer</button></div>");
+ $("#info").html(currentObject);
+ console.log(getCookie("note"));
+}
+
+function supprimer(){
+var idCssDossier = document.getElementById("note").value;
+		$.ajax({ // on envoie l'id de la note à supprimer
+						   type: "POST",
+						   url: "serveur.php",
+						   data:  idCssDossier,
+						   success: function(msg){
+						   
+							document.location.href="liste_notes.html";
+							
+							}
+				});
+				}
+
+function annuler(){
+$("#info").html("");
+}
+function modifier(){
+var idCssDossier = document.getElementById("note").value;
+		$.ajax({ // on envoie l'id de la note à modifier et on l'affiche
+						   type: "GET",
+						   url: "serveur.php",
+						   data:  idCssDossier,
+						   success: function(msg){
+						   
+							document.location.href="liste_notes.html";
+							
+							}
+				});
+				
+	var currentObject = null;
+currentObject = $("<input class='input-xlarge' id='titre' type='text' value='titre'></br><input class='input-xlarge' id='com' type='text' value='commentaire'></br><input class='input-xlarge' id='ad' type='text' value='adresse'></br></INPUT><br><button class='btn btn-large btn-primary' onclik=valider();>Valider</button><button class='btn btn-large' type='button' onclick=annuler();>Annuler</button></br>");
+ $("#contenu").html(currentObject);
+				
+}
+
+function valider(){
+var idCssDossier = "("document.getElementById("note")+","+document.getElementById("titre").value+","+document.getElementById("com").value+","+document.getElementById("ad").value+")";
+		$.ajax({ // on denvoie en ajax les nouvels données de la note ( id , titre, commentaire,ad )
+						   type: "POST",
+						   url: "serveur.php",
+						   data:  idCssDossier,
+						   success: function(msg){
+						   
+							document.location.href="user.html";
+							
+							}
+				});
+		}
+
+
+
+
+</SCRIPT>
+	<div id="monTableau"  style="margin-left:auto; margin-right:auto; width:600px; height:200px;overflow: scroll; left: 514px; top: 61px;">
+	
+	<!-- Template d'affichage des notes -->
+			
+            <script  type="text/template" id="notes-collection-template">
+				
+				<table  class="table table-striped">
+				<ul>
+				<tr><td> lieu :</td><td> description :</td> </tr>
+                <% _.each(notes, function(note) {  %>
+                <tr ><td onclick=itineraire(<%=note.num %>);><%=note.lieu%></td>
+                <td><%= note.desc %></td><td><%=note.num%></td></tr>
+                <% }); %>
+				 </ul>
+				</table>
+            </script>
+            <!-- div o??ront affich?les notes -->
+            <div id="notes-collection-container"></div>
+	
+	</div>
+
+	<div id = "info" style="margin-left:auto; margin-right:auto;width:600px;">
+	</div>
+	
+
+<script>
+
+        $(function (){
+ 
+     /*--- bootstrap ---*/
+    liste.listenotes = new liste.noteCollection();
+	notesView = new liste.noteView({ collection : liste.listenotes })
+	notesView.render();
+        });
+   </script>
+
+  </body>
+ 
+   <script type="text/javascript" src="js//jquery.min.js"></script>
+    <script type="text/javascript" src="js/jquerry-1.8.3.min.js"></script>
+    <script type="text/javascript" src="js//functions.js"></script>
+    <script src="js/bootstrap.js"></script>
+	<script src="libs/underscore.js"></script>
+	<script src="libs/backbone.js"></script> 
+	<script  src="libs//backbone_structure.js"></script>
+	
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Inscription</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="description" content="">
+		<meta name="author" content="">
+		<!-- Le styles -->
+		<link href="css/bootstrap.css" rel="stylesheet">
+		<link href="css/bootstrap-responsive.css" rel="stylesheet">
+		<style type="text/css">
+			body{
+				overflow: none;
+				overflow: hidden;
+				overflow: scroll;
+							}
+			p {font-size:15px;}
+			input[type="text"] { 
+				width:70%; 
+				height:5%;  
+			} 
+			#creation{
+				text-align: center;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="navbar navbar-inverse navbar-fixed-top">
+			<div class="navbar-inner">
+				<div class="container">
+				    <ul class="pager">
+					    <li><a href="index.html"><i class="icon-chevron-left"></i></a></li>
+				    </ul>
+				</div>
+			</div>
+		</div>
+		<div class="container">
+			<div class="hero-unit" id="creation">
+				<h3>Inscription</h3>
+				<p> Login </p>
+				<input class="input-xlarge" id="log" type="text" value="log">
+				<p> Mot de passe </p>
+				<input class="input-xlarge" id="pass" type="text" value="pass">
+				<p> pseudo :</p>
+				<input class="input-xlarge" id="pseudo" type="text" value="">
+				<p> Adresse :</p>
+				<input class="input-xlarge" id="adresse" type="text" value="">
+				<p> Code postale:</p>
+				<input class="input-xlarge" id="code" type="text" value="">
+				<div id = "boutons">
+					<a href="index.html" style="color:#FFFFFF"><button class="btn btn-small btn-primary" type="button" onclick=test();>Confirmer</button></a>
+					<a href="index.html" style="color:#000000"><button class="btn btn-small" type="button">Annuler</button></a>
+				</div>
+			</div>
+		</div>
+		<script src="js/jquerry-1.8.3.min.js"></script>
+		<script src="js/bootstrap.js"></script>
+		<script>
+		function test(){
+		// envoie des donné de la forme ( log , pass , pseudo, adresse,code postale) utilisable directement pour un create
+		requete="("+document.getElementById("log").value+","+document.getElementById("pass").value+","+document.getElementById("pseudo").value+","+document.getElementById("adresse").value+","+document.getElementById("code").value+")";
+			$.ajax({ // on rafraichit la page à l'aide d'une requête AJAX
+						   type: "POST",
+						   url: "inscriptionTest.php",
+						   data:  idCssDossier,
+						   success: function(msg){
+							setCookie("log",document.getElementById("mail").value);
+							document.location.href="user.html";
+						   
+						   }  
+		          })
+}				
+		</script>
+	</body>
+</html>

@@ -1,0 +1,161 @@
+
+
+<html lang="en">
+  		<meta charset="utf-8">
+		<title>Liste des notes</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="description" content="">
+		<meta name="author" content="">
+		<!-- Le styles -->
+		<link href="css/bootstrap.css" rel="stylesheet">
+		<link href="css/bootstrap-responsive.css" rel="stylesheet">
+		<style type="text/css">
+			body {
+				//padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+				overflow: none;
+				overflow: hidden;
+				overflow: scroll;
+			}
+			#creation{
+				text-align:center;
+			}
+		</style>
+ <script type="text/javascript" src="js//jquery.min.js"></script>
+    <script type="text/javascript" src="js/jquerry-1.8.3.min.js"></script>
+    <script type="text/javascript" src="js//functions.js"></script>
+    <script src="js/bootstrap.js"></script>
+	<script src="libs/underscore.js"></script>
+	<script src="libs/backbone.js"></script> 
+	<script  src="libs//backbone_structure.js"></script>
+<header>
+   <div class="navbar navbar-inverse navbar-fixed-top">
+			<div class="navbar-inner">
+				<div class="container">
+				    <ul class="pager">
+					    <li><a href="user.html"><i class="icon-chevron-left"></i></a></li>
+                    	<li><a href="index.html"><i class="icon-off"></i></a></li>
+				    </ul>
+				</div>
+			</div>
+		</div>
+    	</br>
+	</header>
+	<body onload=controle();>
+  
+	
+	
+	
+	<h4 style="text-align:center;">geonotes disponnibles :</h4>
+	
+	<!--<iframe src="liste.html" scrolling="auto" frameborder="1"  class="span12" align="center" width="280" height="150" style="padding : 0px 0px;"<!--style="width:120%; height:100%; margin:auto;"transparency></iframe>-->
+	
+<SCRIPT>	
+
+
+function controle() {
+
+liste.listenotes.add(new liste.note({ lieu : "Saint patrick!!", desc : "on va se mettre bien!!!", num : "1" }))
+liste.listenotes.add(new liste.note({ lieu : "bruxel corner!!", desc : "on va se mettre bien!!!", num :  "2"}))
+liste.listenotes.add(new liste.note({ lieu : "smoking dogg!!", desc : "on va se mettre bien!!!", num : "3"}))
+liste.listenotes.add(new liste.note({ lieu : "ninkazi!!", desc : "on va se mettre bien!!!",num : "4" }))
+liste.listenotes.add(new liste.note({ lieu : "ze bar!!", desc : "on va se mettre bien!!!",num :  "5" }))
+liste.listenotes.add(new liste.note({ lieu : "le tacos!!", desc : "on va se mettre bien!!!",num : "6" }))
+liste.listenotes.add(new liste.note({ lieu : "encore un tacos!!", desc : "on va se mettre bien!!!",num :  "7" }))
+liste.listenotes.add(new liste.note({ lieu : "toujours!!!!", desc : "on va se mettre bien!!!",num : "8" }))
+notesView.render()
+
+}
+
+
+function itineraire( nombre){
+				  
+				  /*$.ajax({ // on récupère le parcour avec une requete ajax
+						   type: "GET",
+						   url: "serveur.php",
+						   data:  num,
+						   success: function(msg){
+						   document.getElementById("info").innerHTML = msg; //on récupère le nom du parcour concerné
+						   afficheCarte(num);
+						   }
+						   
+		          })*/
+
+var currentObject = null;
+currentObject = $("<FORM METHOD='POST'  ACTION='parcour.html' ><p> Parcour selectionné<br><INPUT type=text name='parcour' value="+nombre+"><INPUT type='submit'></FORM>"); 
+ $("#info").html(currentObject);
+ setCookie("parcour", nombre);
+ console.log(getCookie("parcour"));
+}
+
+function setCookie(name, value, days, path)
+{
+	/*Valeur par défaut de l'expiration*/ 
+	var expires = '';
+	/*Si on a spécifié un nombre de jour on le convertit en dae*/
+	if (days != undefined && days != 0)
+	{
+		var date = new Date();
+		/*On évite les dates négatives*/
+		if (days < 0)
+		{
+			date.setTime(0);
+		}
+		else
+		{
+			date.setTime(date.getTime() + Math.ceil(days * 86400 * 1000));
+		}
+		expires = '; expires=' + date.toGMTString();
+	}
+	/*Si on a pas spécifié de path on pose le cookie sur tout le domain*/
+	path = path || '/';
+	document.cookie = name + '=' + encodeURIComponent(value) + expires + '; path=' + path;
+}
+
+</SCRIPT>
+	<div id="monTableau"  style="margin-left:auto; margin-right:auto; width:600px; height:200px;overflow: scroll; left: 514px; top: 61px;">
+	
+	<!-- Template d'affichage des notes -->
+			
+            <script  type="text/template" id="notes-collection-template">
+				
+				<table  class="table table-striped">
+				<ul>
+				<tr><td> lieu :</td><td> description :</td> </tr>
+                <% _.each(notes, function(note) {  %>
+                <tr ><td onclick=itineraire(<%=note.num %>);><%=note.lieu%></td>
+                <td><%= note.desc %></td><td><%=note.num%></td></tr>
+                <% }); %>
+				 </ul>
+				</table>
+            </script>
+            <!-- div o??ront affich?les notes -->
+            <div id="notes-collection-container"></div>
+	
+	</div>
+
+	<div id = "info" style="margin-left:auto; margin-right:auto;width:600px;">
+	</div>
+	
+
+<script>
+
+        $(function (){
+ 
+     /*--- bootstrap ---*/
+    liste.listenotes = new liste.noteCollection();
+	notesView = new liste.noteView({ collection : liste.listenotes })
+	notesView.render();
+        });
+   </script>
+
+  </body>
+ 
+   <script type="text/javascript" src="js//jquery.min.js"></script>
+    <script type="text/javascript" src="js/jquerry-1.8.3.min.js"></script>
+    <script type="text/javascript" src="js//functions.js"></script>
+    <script src="js/bootstrap.js"></script>
+	<script src="libs/underscore.js"></script>
+	<script src="libs/backbone.js"></script> 
+	<script  src="libs//backbone_structure.js"></script>
+	
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Liste</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<link href="css/bootstrap.css" rel="stylesheet">
+	<link href="css/bootstrap-responsive.css" rel="stylesheet">
+	<style type="text/css">
+		body{
+			overflow:scroll;
+		}
+		</style>
+	<SCRIPT LANGUAGE="javascript">
+	function controle() {
+	liste.listenotes.add(new liste.note({ lieu : "Saint patrick!!", desc : "on va se mettre bien!!!" }))
+	liste.listenotes.add(new liste.note({ lieu : "bruxel corner!!", desc : "on va se mettre bien!!!" }))
+	liste.listenotes.add(new liste.note({ lieu : "smoking dogg!!", desc : "on va se mettre bien!!!" }))
+	liste.listenotes.add(new liste.note({ lieu : "ninkazi!!", desc : "on va se mettre bien!!!" }))
+	liste.listenotes.add(new liste.note({ lieu : "ze bar!!", desc : "on va se mettre bien!!!" }))
+	liste.listenotes.add(new liste.note({ lieu : "le tacos!!", desc : "on va se mettre bien!!!" }))
+	liste.listenotes.add(new liste.note({ lieu : "encore un tacos!!", desc : "on va se mettre bien!!!" }))
+	liste.listenotes.add(new liste.note({ lieu : "toujours!!!!", desc : "on va se mettre bien!!!" }))
+		notesView.render()
+	}
+	function itineraire(){
+	console.log("onclick ca marche!!!!");
+	}
+	</SCRIPT>
+</head>
+
+<body onload="controle();">
+
+<!-- Template d'affichage des notes -->
+
+<script type="text/template" id="notes-collection-template">
+<table class="table table-striped">
+<ul>
+<tr><td> lieu :</td><td> description :</td> </tr>
+<% _.each(notes, function(note) { %>
+<tr onclick="itineraire();"><td><%=note.lieu%></td>
+<td><%= note.desc %></td></tr>
+<% }); %>
+</ul>
+</table>
+</script>
+<!-- div où seront affichés les notes -->
+<div id="notes-collection-container"></div>
+
+</body>
+<!-- === Frameworks === -->
+<script src="libs/jquery-1.7.2.js"></script>
+<!--<script src="libs/vendors/bootstrap/js/bootstrap.js"></script>-->
+<script src="libs/underscore.js"></script>
+<script src="libs/backbone.js"></script>
+
+<!-- === code applicatif === -->
+<script>
+
+$(function (){
+window.liste = {};
+
+/*--- Modèle note ---*/
+
+liste.note = Backbone.Model.extend({
+defaults : {
+lieu : "lieu de la note",
+desc : "description de la note"
+},
+initialize : function () {
+console.log ("Création d'une nouvelle note");
+this.set("publicationDate",new Date());
+}
+});
+
+/*--- Collection de notes ---*/
+
+liste.noteCollection = Backbone.Collection.extend({
+model : liste.note,
+initialize : function () {
+console.log ("Création d'une collection de notes")
+}
+});
+
+/*--- Vues ---*/
+liste.noteView = Backbone.View.extend({
+
+el : $("#notes-collection-container"),
+
+initialize : function () {
+this.template = _.template($("#notes-collection-template").html());
+
+/*--- binding ---*/
+_.bindAll(this, 'render');
+
+this.collection.bind('change', this.render);
+this.collection.bind('add', this.render);
+this.collection.bind('remove', this.render);
+/*---------------*/
+},
+
+render : function () {
+var renderedContent = this.template({ 
+notes : this.collection.toJSON() 
+});
+$(this.el).html(renderedContent);
+return this;
+}
+});
+
+/*--- bootstrap ---*/
+liste.listenotes = new liste.noteCollection();
+
+
+notesView = new liste.noteView({ collection : liste.listenotes })
+notesView.render()
+});
+</script>
+</html>

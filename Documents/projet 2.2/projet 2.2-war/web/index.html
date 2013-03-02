@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Index</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="description" content="">
+		<meta name="author" content="">
+		<!-- Le styles -->
+		<link href="css/bootstrap.css" rel="stylesheet">
+		<link href="css/bootstrap-responsive.css" rel="stylesheet">
+		<style type="text/css">
+			body {
+				overflow: none;
+				overflow: hidden;
+				overflow: scroll;
+			}
+			#creation{
+				text-align:center;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="navbar navbar-inverse navbar-fixed-top">
+			<div class="navbar-inner">
+				<div class="container">
+					<a class="brand" Style ="color : white; margin-left:2%;">GeoNote</a>
+				</div>
+			</div>
+		</div>
+		<div class="container">
+			<div class="hero-unit" id="creation">
+			
+					<h4>Bienvenu sur Geonote </h4>
+					</br>
+						<div>
+						
+						<div>
+						<input type="text" id="mail" class="input-xlarge" placeholder="Adresse électronique">
+						</div>
+						<div>
+						<input type="password" id="password" class="input-xlarge" placeholder="Mot de passe">
+						</div>
+					</br>
+					
+						<div>
+						<input type="submit" onclick=recupNomContact(); value="Connexion " class="btn btn-primary btn-large input-xlarge">
+						</div>
+						
+				<a href="inscription.html" style="color:#000000;">
+				<button class="btn btn-large" type="button">S'inscrire</button>
+				</a>
+				</br>
+				</br>
+				<a href="a_propos.html" style="color:#000000;">
+				<button class="btn btn-link" type="button">A propos</button>
+				</a>
+			</div>
+			<div id="features">
+			</div>
+		</div>
+		
+		<!-- Le javascript
+		================================================== -->
+		<!-- Placed at the end of the document so the pages load faster -->
+		<script src="js/jquerry-1.8.3.min.js"></script>
+		<script src="js/bootstrap.js"></script>
+		<script>
+		function recupNomContact(){
+		// envoie des données sous la forme mail='lemail' and pass='lepass' 
+		idCssDossier="mail='"+document.getElementById("mail").value+"' AND  pass='"+document.getElementById("password").value+"'";
+		console.log(idCssDossier);
+		$.ajax({ // on rafraichit la page à l'aide d'une requête AJAX
+						   type: "GET",
+						   url: "serveur.php",
+						   data:  idCssDossier,
+						   success: function(msg){
+						   if( msg==1){
+							setCookie("log",document.getElementById("mail").value);
+							document.location.href="user.html";
+							console.log("1");
+							}
+							if(msg==0){
+						   document.getElementById("features").innerHTML = "erreur pass ou log ";
+						   console.log("0");
+						   }
+							
+						   }
+						   
+		          })
+	}
+	function setCookie(name, value, days, path)
+{
+	/*Valeur par défaut de l'expiration*/ 
+	var expires = '';
+	/*Si on a spécifié un nombre de jour on le convertit en dae*/
+	if (days != undefined && days != 0)
+	{
+		var date = new Date();
+		/*On évite les dates négatives*/
+		if (days < 0)
+		{
+			date.setTime(0);
+		}
+		else
+		{
+			date.setTime(date.getTime() + Math.ceil(days * 86400 * 1000));
+		}
+		expires = '; expires=' + date.toGMTString();
+	}
+	/*Si on a pas spécifié de path on pose le cookie sur tout le domain*/
+	path = path || '/';
+	document.cookie = name + '=' + encodeURIComponent(value) + expires + '; path=' + path;
+}
+		</script>
+	</body>
+</html>
